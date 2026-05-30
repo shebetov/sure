@@ -44,6 +44,13 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Make package public
+        run: |
+          gh api -X PATCH /user/packages/container/sure \
+            -f visibility=public || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Trigger deploy
         run: |
           curl -f -X POST \

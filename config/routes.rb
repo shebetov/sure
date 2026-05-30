@@ -269,8 +269,10 @@ Rails.application.routes.draw do
     resource :ai_prompts, only: :show
     resource :llm_usage, only: :show
     resource :guides, only: :show
-    resources :transfer_match_pairs, only: %i[index create destroy] do
+    resources :transfer_match_groups, only: %i[index create destroy] do
       patch :settings, on: :collection
+      resources :memberships, only: %i[create destroy],
+                controller: "settings/transfer_match_group_memberships"
     end
     get "bank_sync", to: redirect("/settings/providers", status: 301)
     resource :providers, only: %i[show update] do

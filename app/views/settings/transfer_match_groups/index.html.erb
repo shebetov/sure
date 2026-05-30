@@ -1,0 +1,72 @@
+<%= content_for :page_title, t(".title") %>
+
+<%= settings_section title: t(".matching_settings_title"), subtitle: t(".matching_settings_subtitle") do %>
+  <%= form_with model: @family, url: settings_transfer_match_groups_settings_path, method: :patch do |f| %>
+    <div class="flex flex-col sm:flex-row gap-4">
+      <div class="flex-1">
+        <label class="block text-sm font-medium text-primary mb-1"><%= t(".date_window_label") %></label>
+        <%= f.number_field :transfer_match_date_window, min: 0, max: 30, step: 1, class: "input w-full" %>
+        <p class="text-xs text-secondary mt-1"><%= t(".date_window_hint") %></p>
+      </div>
+      <div class="flex-1">
+        <label class="block text-sm font-medium text-primary mb-1"><%= t(".exchange_rate_tolerance_label") %></label>
+        <%= f.number_field :transfer_match_exchange_rate_tolerance, min: 0.0, max: 1.0, step: 0.01, class: "input w-full" %>
+        <p class="text-xs text-secondary mt-1"><%= t(".exchange_rate_tolerance_hint") %></p>
+      </div>
+    </div>
+    <div class="mt-4">
+      <%= render DS::Button.new(text: t(".save_settings"), type: :submit) %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= settings_section title: t(".add_group_title"), subtitle: t(".add_group_subtitle") do %>
+  <%= form_with url: settings_transfer_match_groups_path, method: :post do |f| %>
+    <div class="flex gap-3">
+      <input type="text" name="name" placeholder="<%= t('.group_name_placeholder') %>" class="input flex-1" />
+      <%= render DS::Button.new(text: t(".add_group"), type: :submit) %>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @groups.any? %>
+  <%= settings_section title: t(".groups_title"), subtitle: t(".groups_subtitle") do %>
+    <div class="space-y-4">
+      <% @groups.each do |group| %>
+        <div class="rounded-lg border border-primary p-4">
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-medium text-sm text-primary"><%= group.name.presence || t(".unnamed_group") %></span>
+            <%= button_to settings_transfer_match_group_path(group), method: :delete,
+                class: "text-secondary hover:text-destructive transition-colors" do %>
+              <%= icon "x", size: 16 %>
+            <% end %>
+          </div>
+
+          <% if group.transfer_match_group_memberships.any? %>
+            <div class="flex flex-wrap gap-2 mb-3">
+              <% group.transfer_match_group_memberships.each do |membership| %>
+                <div class="flex items-center gap-1 rounded-full bg-container-inset border border-primary px-3 py-1 text-xs text-primary">
+                  <span><%= membership.account.name %></span>
+                  <%= button_to settings_transfer_match_group_membership_path(group, membership), method: :delete,
+                      class: "text-secondary hover:text-destructive transition-colors ml-1" do %>
+                    <%= icon "x", size: 10 %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <%= form_with url: settings_transfer_match_group_memberships_path(group), method: :post do |f| %>
+            <div class="flex gap-2">
+              <%= f.select :account_id,
+                  @accounts.map { |a| [ a.name, a.id ] },
+                  { include_blank: t(".select_account") },
+                  { class: "input text-sm flex-1" } %>
+              <%= render DS::Button.new(text: t(".add_account"), type: :submit) %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

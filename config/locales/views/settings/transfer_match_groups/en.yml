@@ -1,0 +1,22 @@
+---
+en:
+  settings:
+    transfer_match_groups:
+      index:
+        title: Transfer Match Groups
+        matching_settings_title: Matching Settings
+        matching_settings_subtitle: Tune how transfers are matched across accounts.
+        date_window_label: Date Window (days)
+        date_window_hint: Transfers must fall within this many days of each other (0–30).
+        exchange_rate_tolerance_label: Exchange Rate Tolerance
+        exchange_rate_tolerance_hint: Allowed FX rate deviation for cross-currency matching (0.0–1.0).
+        save_settings: Save
+        add_group_title: Add Group
+        add_group_subtitle: Only transfers between accounts in the same group will be auto-matched.
+        group_name_placeholder: Group name (optional)
+        add_group: Add group
+        groups_title: Configured Groups
+        groups_subtitle: Auto-matching is restricted to accounts within the same group.
+        unnamed_group: Unnamed group
+        select_account: Add account…
+        add_account: Add

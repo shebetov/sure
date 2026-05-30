@@ -1,5 +1,25 @@
 <%= content_for :page_title, t(".title") %>
 
+<%= settings_section title: t(".matching_settings_title"), subtitle: t(".matching_settings_subtitle") do %>
+  <%= form_with model: @family, url: settings_transfer_match_pairs_path, method: :patch do |f| %>
+    <div class="flex flex-col sm:flex-row gap-4">
+      <div class="flex-1">
+        <label class="block text-sm font-medium text-primary mb-1"><%= t(".date_window_label") %></label>
+        <%= f.number_field :transfer_match_date_window, min: 0, max: 30, step: 1, class: "input w-full" %>
+        <p class="text-xs text-secondary mt-1"><%= t(".date_window_hint") %></p>
+      </div>
+      <div class="flex-1">
+        <label class="block text-sm font-medium text-primary mb-1"><%= t(".exchange_rate_tolerance_label") %></label>
+        <%= f.number_field :transfer_match_exchange_rate_tolerance, min: 0.0, max: 1.0, step: 0.01, class: "input w-full" %>
+        <p class="text-xs text-secondary mt-1"><%= t(".exchange_rate_tolerance_hint") %></p>
+      </div>
+    </div>
+    <div class="mt-4">
+      <%= render DS::Button.new(text: t(".save_settings"), type: :submit) %>
+    </div>
+  <% end %>
+<% end %>
+
 <%= settings_section title: t(".add_pair_title"), subtitle: t(".add_pair_subtitle") do %>
   <%= form_with url: settings_transfer_match_pairs_path, method: :post do |f| %>
     <div class="flex flex-col sm:flex-row items-start sm:items-end gap-3">

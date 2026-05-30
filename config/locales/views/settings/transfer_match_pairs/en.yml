@@ -4,6 +4,13 @@ en:
     transfer_match_pairs:
       index:
         title: Transfer Match Pairs
+        matching_settings_title: Matching Settings
+        matching_settings_subtitle: Tune how transfers are matched across accounts.
+        date_window_label: Date Window (days)
+        date_window_hint: Transfers must fall within this many days of each other (0–30).
+        exchange_rate_tolerance_label: Exchange Rate Tolerance
+        exchange_rate_tolerance_hint: Allowed FX rate deviation for cross-currency matching (0.0–1.0).
+        save_settings: Save
         add_pair_title: Add Pair
         add_pair_subtitle: Only transfers between configured pairs will be auto-matched.
         account_a_label: Account A

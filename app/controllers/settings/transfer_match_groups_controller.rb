@@ -1,38 +1,35 @@
-class Settings::TransferMatchPairsController < ApplicationController
+class Settings::TransferMatchGroupsController < ApplicationController
   layout "settings"
 
   def index
-    @pairs = Current.family.transfer_match_pairs.includes(:account_a, :account_b)
+    @groups = Current.family.transfer_match_groups.includes(transfer_match_group_memberships: :account)
     @accounts = Current.family.accounts.visible.alphabetically
     @family = Current.family
   end
 
   def create
-    @pair = Current.family.transfer_match_pairs.build(
-      account_a_id: params[:account_a_id],
-      account_b_id: params[:account_b_id]
-    )
+    @group = Current.family.transfer_match_groups.build(name: params[:name].presence)
 
-    if @pair.save
-      redirect_to settings_transfer_match_pairs_path
+    if @group.save
+      redirect_to settings_transfer_match_groups_path
     else
-      @pairs = Current.family.transfer_match_pairs.includes(:account_a, :account_b)
+      @groups = Current.family.transfer_match_groups.includes(transfer_match_group_memberships: :account)
       @accounts = Current.family.accounts.visible.alphabetically
-      flash.now[:alert] = @pair.errors.full_messages.to_sentence
+      @family = Current.family
       render :index, status: :unprocessable_entity
     end
   end
 
   def destroy
-    Current.family.transfer_match_pairs.find(params[:id]).destroy
-    redirect_to settings_transfer_match_pairs_path
+    Current.family.transfer_match_groups.find(params[:id]).destroy
+    redirect_to settings_transfer_match_groups_path
   end
 
   def settings
     if Current.family.update(settings_params)
-      redirect_to settings_transfer_match_pairs_path
+      redirect_to settings_transfer_match_groups_path
     else
-      @pairs = Current.family.transfer_match_pairs.includes(:account_a, :account_b)
+      @groups = Current.family.transfer_match_groups.includes(transfer_match_group_memberships: :account)
       @accounts = Current.family.accounts.visible.alphabetically
       @family = Current.family
       render :index, status: :unprocessable_entity

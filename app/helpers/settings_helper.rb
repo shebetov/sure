@@ -12,7 +12,7 @@ module SettingsHelper
     { name: -> { t("settings.settings_nav.categories_label") }, path: :categories_path },
     { name: -> { t("settings.settings_nav.tags_label") }, path: :tags_path },
     { name: -> { t("settings.settings_nav.rules_label") }, path: :rules_path },
-    { name: -> { t("settings.settings_nav.transfer_pairs_label") }, path: :settings_transfer_match_pairs_path },
+    { name: -> { t("settings.settings_nav.transfer_pairs_label") }, path: :settings_transfer_match_groups_path },
     { name: -> { t("settings.settings_nav.merchants_label") }, path: :family_merchants_path },
     { name: -> { t("settings.settings_nav.recurring_transactions_label") }, path: :recurring_transactions_path },
     { name: -> { t("settings.settings_nav.statement_vault_label") }, path: :account_statements_path, condition: :admin_user? },

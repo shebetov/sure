@@ -38,7 +38,7 @@
             <span class="font-medium text-sm text-primary"><%= group.name.presence || t(".unnamed_group") %></span>
             <%= button_to settings_transfer_match_group_path(group), method: :delete,
                 class: "text-secondary hover:text-destructive transition-colors" do %>
-              <%= icon "x", size: 16 %>
+              <%= icon "x", size: "sm" %>
             <% end %>
           </div>
 
@@ -49,7 +49,7 @@
                   <span><%= membership.account.name %></span>
                   <%= button_to settings_transfer_match_group_membership_path(group, membership), method: :delete,
                       class: "text-secondary hover:text-destructive transition-colors ml-1" do %>
-                    <%= icon "x", size: 10 %>
+                    <%= icon "x", size: "sm" %>
                   <% end %>
                 </div>
               <% end %>

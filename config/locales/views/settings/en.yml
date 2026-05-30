@@ -249,7 +249,7 @@ en:
       profile_label: Profile Info
       recurring_transactions_label: Recurring
       rules_label: Rules
-      transfer_pairs_label: Transfer Pairs
+      transfer_pairs_label: Transfers Matching
       security_label: Security
       self_hosting_label: Self-Hosting
       sso_providers_label: SSO Providers

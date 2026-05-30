@@ -256,7 +256,7 @@ Rails.application.routes.draw do
     resources :transfer_match_groups, only: %i[index create destroy] do
       patch :settings, on: :collection
       resources :memberships, only: %i[create destroy],
-                controller: "settings/transfer_match_group_memberships"
+                controller: "transfer_match_group_memberships"
     end
     get "bank_sync", to: redirect("/settings/providers", status: 301)
     resource :providers, only: %i[show update] do

@@ -284,6 +284,7 @@ en:
       recurring_transactions_label: Recurring
       rules_label: Rules
       mcp_label: MCP
+      transfer_pairs_label: Transfer Pairs
       security_label: Security
       self_hosting_label: Self-Hosting
       sso_providers_label: SSO Providers

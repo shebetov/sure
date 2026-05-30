@@ -26,6 +26,13 @@ involved: [Discord](https://discord.gg/36ZGBsxYEK) • [Website](https://sure.am
 > This repository is a community fork of the now-abandoned Maybe Finance project. <br />
 > Learn more in their [final release](https://github.com/maybe-finance/maybe/releases/tag/v0.6.0) doc.
 
+## Fork customizations
+
+1. **Group-scoped transfer matching** — accounts only auto-match within configured groups
+2. **Per-family tuning knobs** — configurable date window and FX tolerance (defaults match upstream)
+3. **Settings UI** — `/settings/transfer_match_groups` to manage groups and tuning
+4. **Self-hosted build pipeline** — arm64 image to GHCR, auto-deploys via `sure-deploy`
+
 ## Backstory
 
 The [Maybe Finance](https://github.com/maybe-finance/maybe) (archived/abandoned repo) team spent most of 2021–2022 building a full-featured personal finance and wealth management app. It even included an “Ask an Advisor” feature that connected users with a real CFP/CFA — all included with your subscription.

@@ -1,6 +1,8 @@
 module Family::TransferMatchPairable
-  def transfer_match_candidates(*args, **kwargs)
-    scope = super
+  def transfer_match_candidates(date_window: transfer_match_date_window,
+                                exchange_rate_tolerance: transfer_match_exchange_rate_tolerance,
+                                **kwargs)
+    scope = super(date_window: date_window, exchange_rate_tolerance: exchange_rate_tolerance, **kwargs)
     return scope unless transfer_match_pairs.exists?
 
     pairs = transfer_match_pairs.pluck(:account_a_id, :account_b_id)

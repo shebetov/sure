@@ -1,5 +1,5 @@
 class Family < ApplicationRecord
-  include Syncable, AutoTransferMatchable, Subscribeable, VectorSearchable
+  include Syncable, AutoTransferMatchable, TransferMatchPairable, Subscribeable, VectorSearchable
   include PlaidConnectable, SimplefinConnectable, LunchflowConnectable, EnableBankingConnectable
   include CoinbaseConnectable, BinanceConnectable, KrakenConnectable, CoinstatsConnectable, SnaptradeConnectable, MercuryConnectable, BrexConnectable, SophtronConnectable
   include IndexaCapitalConnectable, IbkrConnectable
@@ -33,6 +33,7 @@ class Family < ApplicationRecord
   has_many :entries, through: :accounts
   has_many :transactions, through: :accounts
   has_many :rules, dependent: :destroy
+  has_many :transfer_match_pairs, dependent: :destroy
   has_many :trades, through: :accounts
   has_many :holdings, through: :accounts
 

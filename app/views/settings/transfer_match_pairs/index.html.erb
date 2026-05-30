@@ -1,0 +1,49 @@
+<%= content_for :page_title, t(".title") %>
+
+<%= settings_section title: t(".add_pair_title"), subtitle: t(".add_pair_subtitle") do %>
+  <%= form_with url: settings_transfer_match_pairs_path, method: :post do |f| %>
+    <div class="flex flex-col sm:flex-row items-start sm:items-end gap-3">
+      <div class="flex-1 min-w-0">
+        <label class="block text-sm font-medium text-primary mb-1"><%= t(".account_a_label") %></label>
+        <%= f.select :account_a_id,
+            @accounts.map { |a| [ a.name, a.id ] },
+            { include_blank: t(".select_account") },
+            { class: "input w-full" } %>
+      </div>
+      <div class="shrink-0 hidden sm:flex items-center pb-1">
+        <%= icon "arrow-left-right", class: "text-secondary" %>
+      </div>
+      <div class="flex-1 min-w-0">
+        <label class="block text-sm font-medium text-primary mb-1"><%= t(".account_b_label") %></label>
+        <%= f.select :account_b_id,
+            @accounts.map { |a| [ a.name, a.id ] },
+            { include_blank: t(".select_account") },
+            { class: "input w-full" } %>
+      </div>
+      <%= render DS::Button.new(text: t(".add"), type: :submit, class: "shrink-0 self-end") %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= settings_section title: t(".pairs_title"), subtitle: t(".pairs_subtitle") do %>
+  <% if @pairs.any? %>
+    <div class="space-y-2">
+      <% @pairs.each do |pair| %>
+        <div class="flex items-center justify-between gap-3 rounded-lg border border-primary px-4 py-3">
+          <div class="flex items-center gap-3 text-sm text-primary min-w-0">
+            <span class="font-medium truncate"><%= pair.account_a.name %></span>
+            <%= icon "arrow-left-right", class: "text-secondary shrink-0" %>
+            <span class="font-medium truncate"><%= pair.account_b.name %></span>
+          </div>
+          <%= button_to settings_transfer_match_pair_path(pair),
+              method: :delete,
+              class: "shrink-0 text-secondary hover:text-destructive transition-colors" do %>
+            <%= icon "x", size: 16 %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-sm text-secondary"><%= t(".empty_state") %></p>
+  <% end %>
+<% end %>

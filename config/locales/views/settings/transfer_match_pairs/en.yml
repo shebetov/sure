@@ -1,0 +1,15 @@
+---
+en:
+  settings:
+    transfer_match_pairs:
+      index:
+        title: Transfer Match Pairs
+        add_pair_title: Add Pair
+        add_pair_subtitle: Only transfers between configured pairs will be auto-matched.
+        account_a_label: Account A
+        account_b_label: Account B
+        select_account: Select account
+        add: Add pair
+        pairs_title: Configured Pairs
+        pairs_subtitle: Auto-matching is restricted to these account pairs.
+        empty_state: No pairs configured — auto-matching runs across all accounts.

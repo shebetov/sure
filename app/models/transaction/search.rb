@@ -15,6 +15,7 @@ class Transaction::Search
   attribute :merchants, array: true
   attribute :tags, array: true
   attribute :active_accounts_only, :boolean, default: true
+  attribute :transfer_match, array: true
 
   attr_reader :family, :accessible_account_ids
 
@@ -42,6 +43,7 @@ class Transaction::Search
       query = EntrySearch.apply_date_filters(query, start_date, end_date)
       query = EntrySearch.apply_amount_filter(query, amount, amount_operator)
       query = EntrySearch.apply_accounts_filter(query, accounts, account_ids)
+      query = apply_transfer_match_filter(query, transfer_match)
 
       query
     end
@@ -190,6 +192,16 @@ class Transaction::Search
     def apply_tag_filter(query, tags)
       return query unless tags.present?
       query.joins(:tags).where(tags: { name: tags })
+    end
+
+    def apply_transfer_match_filter(query, values)
+      return query unless values.present?
+      return query if values.uniq.sort == [ "auto_matched", "confirmed" ]
+
+      statuses = values.map { |v| v == "auto_matched" ? "pending" : v }
+      query
+        .joins("JOIN transfers ON transfers.inflow_transaction_id = transactions.id OR transfers.outflow_transaction_id = transactions.id")
+        .where(transfers: { status: statuses })
     end
 
     def apply_status_filter(query, statuses)

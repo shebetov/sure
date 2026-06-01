@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+IMPORTANT: always update "Fork customizations" section before doing commit in this repo.
+
 ## Common Development Commands
 
 ### Development Server

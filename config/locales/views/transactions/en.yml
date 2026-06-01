@@ -234,6 +234,7 @@ en:
         category: Category
         tag: Tag
         merchant: Merchant
+        transfer_match: Transfer match
     convert_to_trade:
       title: Convert to Security Trade
       description: Convert this transaction into a trade with security details
@@ -302,6 +303,8 @@ en:
           transfer: Transfer
           confirmed: Confirmed
           pending: Pending
+          transfer_match_auto_matched: Auto-matched
+          transfer_match_confirmed: Confirmed transfer
         type_filter:
           expense: Expense
           income: Income
@@ -309,6 +312,9 @@ en:
         status_filter:
           confirmed: Confirmed
           pending: Pending
+        transfer_match_filter:
+          auto_matched: Auto-matched (pending)
+          confirmed: Confirmed transfer
       menu:
         account_filter: Account
         amount_filter: Amount
@@ -320,6 +326,7 @@ en:
         merchant_filter: Merchant
         status_filter: Status
         tag_filter: Tag
+        transfer_match_filter: Transfer match
         type_filter: Type
       search:
         equal_to: equal to

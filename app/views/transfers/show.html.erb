@@ -21,6 +21,8 @@
   <% dialog.with_body do %>
     <% dialog.with_section(title: t(".overview"), open: true) do %>
       <div class="pb-4 px-3 pt-2 text-sm space-y-3 text-primary">
+        <% outflow_entry = @transfer.outflow_transaction.entry %>
+        <% inflow_entry = @transfer.inflow_transaction.entry %>
         <div class="space-y-3">
           <dl class="flex items-center gap-2 justify-between">
             <dt class="text-secondary"><%= t(".from") %></dt>
@@ -30,12 +32,16 @@
             </dd>
           </dl>
           <dl class="flex items-center gap-2 justify-between">
+            <dt class="text-secondary"><%= t(".name") %></dt>
+            <dd class="font-medium truncate max-w-[60%] privacy-sensitive"><%= outflow_entry.name %></dd>
+          </dl>
+          <dl class="flex items-center gap-2 justify-between">
             <dt class="text-secondary"><%= t(".date") %></dt>
-            <dd class="font-medium"><%= l(@transfer.outflow_transaction.entry.date, format: :long) %></dd>
+            <dd class="font-medium"><%= l(outflow_entry.date, format: :long) %></dd>
           </dl>
           <dl class="flex items-center gap-2 justify-between">
             <dt class="text-secondary"><%= t(".transfer_amount") %></dt>
-            <dd class="font-medium text-destructive privacy-sensitive"><%= format_money @transfer.outflow_transaction.entry.amount_money * -1 %></dd>
+            <dd class="font-medium text-destructive privacy-sensitive"><%= format_money outflow_entry.amount_money * -1 %></dd>
           </dl>
           <% if @transfer.has_source_fee? %>
             <dl class="flex items-center gap-2 justify-between">
@@ -45,10 +51,15 @@
             <dl class="flex items-center gap-2 justify-between pt-1 border-t border-alpha-black-50">
               <dt class="text-secondary font-medium"><%= t(".total") %></dt>
               <dd class="font-medium text-destructive privacy-sensitive">
-                <%= format_money (@transfer.outflow_transaction.entry.amount_money + Money.new(@transfer.derived_source_fee_amount, @transfer.from_account.currency)) * -1 %>
+                <%= format_money (outflow_entry.amount_money + Money.new(@transfer.derived_source_fee_amount, @transfer.from_account.currency)) * -1 %>
               </dd>
             </dl>
           <% end %>
+          <div class="flex justify-end">
+            <%= link_to t(".view_transaction"), transaction_path(outflow_entry),
+                class: "text-xs text-secondary hover:text-primary underline underline-offset-2",
+                data: { turbo_frame: "drawer" } %>
+          </div>
         </div>
         <%= render "shared/ruler", classes: "my-2" %>
         <div class="space-y-3">
@@ -60,12 +71,16 @@
             </dd>
           </dl>
           <dl class="flex items-center gap-2 justify-between">
+            <dt class="text-secondary"><%= t(".name") %></dt>
+            <dd class="font-medium truncate max-w-[60%] privacy-sensitive"><%= inflow_entry.name %></dd>
+          </dl>
+          <dl class="flex items-center gap-2 justify-between">
             <dt class="text-secondary"><%= t(".date") %></dt>
-            <dd class="font-medium"><%= l(@transfer.inflow_transaction.entry.date, format: :long) %></dd>
+            <dd class="font-medium"><%= l(inflow_entry.date, format: :long) %></dd>
           </dl>
           <dl class="flex items-center gap-2 justify-between">
             <dt class="text-secondary"><%= t(".transfer_amount") %></dt>
-            <dd class="font-medium text-success privacy-sensitive">+<%= format_money @transfer.inflow_transaction.entry.amount_money * -1 %></dd>
+            <dd class="font-medium text-success privacy-sensitive">+<%= format_money inflow_entry.amount_money * -1 %></dd>
           </dl>
           <% if @transfer.has_destination_fee? %>
             <dl class="flex items-center gap-2 justify-between">
@@ -74,9 +89,14 @@
             </dl>
             <dl class="flex items-center gap-2 justify-between pt-1 border-t border-alpha-black-50">
               <dt class="text-secondary font-medium"><%= t(".total") %></dt>
-              <dd class="font-medium text-success privacy-sensitive">+<%= format_money (@transfer.inflow_transaction.entry.amount_money * -1) - Money.new(@transfer.derived_destination_fee_amount, @transfer.to_account.currency) %></dd>
+              <dd class="font-medium text-success privacy-sensitive">+<%= format_money (inflow_entry.amount_money * -1) - Money.new(@transfer.derived_destination_fee_amount, @transfer.to_account.currency) %></dd>
             </dl>
           <% end %>
+          <div class="flex justify-end">
+            <%= link_to t(".view_transaction"), transaction_path(inflow_entry),
+                class: "text-xs text-secondary hover:text-primary underline underline-offset-2",
+                data: { turbo_frame: "drawer" } %>
+          </div>
         </div>
       </div>
     <% end %>

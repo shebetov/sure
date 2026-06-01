@@ -28,10 +28,12 @@ involved: [Discord](https://discord.gg/36ZGBsxYEK) • [Website](https://sure.am
 
 ## Fork customizations
 
-1. **Group-scoped transfer matching** — accounts only auto-match within configured groups
+1. **Group-scoped transfer matching** — accounts only auto-match within configured groups; the greedy matcher picks the closest-date pair across all accounts in the same group
 2. **Per-family tuning knobs** — configurable date window and FX tolerance (defaults match upstream)
 3. **Settings UI** — `/settings/transfer_match_groups` to manage groups and tuning
-4. **Self-hosted build pipeline** — arm64 image to GHCR, auto-deploys via `sure-deploy`
+4. **Transfer detail panel** — shows each transaction's name and a "View transaction" link for both sides of a transfer
+5. **Transfer match filter** — transactions page filter to show only auto-matched (pending) or confirmed transfer transactions
+6. **Self-hosted build pipeline** — arm64 image to GHCR, auto-deploys via `sure-deploy`
 
 ## Backstory
 

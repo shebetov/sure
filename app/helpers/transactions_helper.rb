@@ -12,6 +12,7 @@ module TransactionsHelper
       { key: "tag_filter", label: t("transactions.search.filters.tag"), icon: "tags" },
       { key: "merchant_filter", label: t("transactions.search.filters.merchant"), icon: "store" },
       { key: "ai_filter", label: t("transactions.search.filters.ai"), icon: "sparkles" }
+      { key: "transfer_match_filter", label: t("transactions.search.filters.transfer_match"), icon: "arrow-left-right" }
     ]
   end
 

@@ -1,0 +1,26 @@
+<%# locals: (form:) %>
+
+<div class="p-2 space-y-3">
+  <div class="flex items-center gap-3" data-filter-name="auto_matched">
+    <%= form.check_box :transfer_match,
+                           {
+                             multiple: true,
+                             checked: @q[:transfer_match]&.include?("auto_matched"),
+                             class: "checkbox checkbox--light"
+                           },
+                           "auto_matched",
+                           nil %>
+    <%= form.label :transfer_match, t(".auto_matched"), value: "auto_matched", class: "text-sm text-primary" %>
+  </div>
+  <div class="flex items-center gap-3" data-filter-name="confirmed">
+    <%= form.check_box :transfer_match,
+                           {
+                             multiple: true,
+                             checked: @q[:transfer_match]&.include?("confirmed"),
+                             class: "checkbox checkbox--light"
+                           },
+                           "confirmed",
+                           nil %>
+    <%= form.label :transfer_match, t(".confirmed"), value: "confirmed", class: "text-sm text-primary" %>
+  </div>
+</div>

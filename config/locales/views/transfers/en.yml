@@ -41,5 +41,7 @@ en:
       amount: Amount
       category: Category
       uncategorized: Uncategorized
+      name: Name
+      view_transaction: View transaction
     update:
       success: Transfer updated

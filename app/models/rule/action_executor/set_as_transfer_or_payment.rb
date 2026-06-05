@@ -12,7 +12,9 @@ class Rule::ActionExecutor::SetAsTransferOrPayment < Rule::ActionExecutor
     return 0 unless target_account
     scope = transaction_scope.with_entry
 
-    count_modified_resources(scope) do |txn|
+    accounts_to_sync = Set.new
+
+    result = count_modified_resources(scope) do |txn|
       entry = txn.entry
       unless txn.transfer?
         transfer = build_transfer(target_account, entry)
@@ -33,9 +35,14 @@ class Rule::ActionExecutor::SetAsTransferOrPayment < Rule::ActionExecutor
           transfer.inflow_transaction.update!(kind: "funds_movement")
         end
 
-        transfer.sync_account_later
+        accounts_to_sync << transfer.inflow_transaction.entry.account
+        accounts_to_sync << transfer.outflow_transaction.entry.account
       end
     end
+
+    accounts_to_sync.each(&:sync_later)
+
+    result
   end
 
   private

@@ -1,4 +1,4 @@
-# Fork Customizations
+# Fork Changelog (customizations)
 
 1. **Group-scoped transfer matching** — accounts only auto-match within configured groups; the greedy matcher picks the closest-date pair across all accounts in the same group
 2. **Per-family tuning knobs** — configurable date window and FX tolerance (defaults match upstream)

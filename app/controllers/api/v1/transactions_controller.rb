@@ -291,6 +291,10 @@ end
         end
       end
 
+      if params[:kind].present?
+        query = query.where(kind: params[:kind])
+      end
+
       query
     end
 
@@ -308,7 +312,7 @@ end
     def transaction_params
       params.require(:transaction).permit(
         :date, :amount, :name, :description, :notes, :currency,
-        :category_id, :merchant_id, :nature, tag_ids: []
+        :category_id, :merchant_id, :nature, :kind, tag_ids: []
       )
     end
 
@@ -346,7 +350,8 @@ end
         entryable_attributes: {
           id: @entry.entryable_id,
           category_id: transaction_params[:category_id],
-          merchant_id: transaction_params[:merchant_id]
+          merchant_id: transaction_params[:merchant_id],
+          kind: transaction_params[:kind]
           # Note: tag_ids handled separately in update action to distinguish
           # "not provided" from "explicitly set to empty"
         }.compact_blank

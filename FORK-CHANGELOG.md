@@ -7,3 +7,4 @@
 5. **Transfer match filter** — transactions page filter to show only auto-matched (pending) or confirmed transfer transactions
 6. **Self-hosted build pipeline** — arm64 image to GHCR, auto-deploys via `sure-deploy`
 7. **Rule enrichment ignores locks** — `enrich_attributes` skips the locked-attribute check when `source == "rule"`, so rules always apply even to manually-categorized transactions
+8. **API: `kind` filter and update** — `GET /api/v1/transactions?kind=…` and `PATCH /api/v1/transactions/:id` with `kind` now supported; used by housekeeping to reclassify `investment_contribution` → `funds_movement`

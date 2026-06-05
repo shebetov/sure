@@ -295,6 +295,10 @@ class Api::V1::TransactionsController < Api::V1::BaseController
         end
       end
 
+      if params[:kind].present?
+        query = query.where(kind: params[:kind])
+      end
+
       query
     end
 
@@ -312,7 +316,7 @@ class Api::V1::TransactionsController < Api::V1::BaseController
     def transaction_params
       params.require(:transaction).permit(
         :date, :amount, :name, :description, :notes, :currency,
-        :category_id, :merchant_id, :nature, :user_modified, tag_ids: []
+        :category_id, :merchant_id, :nature, :user_modified, :kind, tag_ids: []
       )
     end
 
@@ -360,7 +364,8 @@ class Api::V1::TransactionsController < Api::V1::BaseController
         entryable_attributes: {
           id: @entry.entryable_id,
           category_id: transaction_params[:category_id],
-          merchant_id: transaction_params[:merchant_id]
+          merchant_id: transaction_params[:merchant_id],
+          kind: transaction_params[:kind]
           # Note: tag_ids handled separately in update action to distinguish
           # "not provided" from "explicitly set to empty"
         }.compact_blank

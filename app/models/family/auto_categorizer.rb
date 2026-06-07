@@ -64,7 +64,7 @@ class Family::AutoCategorizer
     end
 
     def user_categories_input
-      family.categories.map do |category|
+      family.categories.select(&:subcategory?).map do |category|
         {
           id: category.id,
           name: category.name,

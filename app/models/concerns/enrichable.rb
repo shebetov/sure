@@ -54,7 +54,7 @@ module Enrichable
     # Track current values before modification for virtual attributes (like tag_ids)
     current_values = {}
     enrichable_attrs = Array(attrs).reject do |attr_key, attr_value|
-      if (locked?(attr_key) && source != "rule") || ignored_enrichable_attributes.include?(attr_key)
+      if locked?(attr_key) || ignored_enrichable_attributes.include?(attr_key)
         true
       else
         # For virtual attributes (like tag_ids), use the getter method

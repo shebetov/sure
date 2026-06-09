@@ -42,7 +42,7 @@ class Family::Syncer
 
     Rails.logger.info("Applying rules for family #{family.id}")
     family.rules.where(active: true).each do |rule|
-      rule.apply_later(ignore_attribute_locks: true)
+      rule.apply_later
     end
   end
 

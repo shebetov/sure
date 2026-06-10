@@ -1,0 +1,13 @@
+en:
+  pages:
+    dashboard:
+      investments_pro:
+        title: Investments (Pro)
+        interest_earned: Interest earned
+        not_available: "n/a"
+        annualized_note: Annualized interest yield (ARR) over the selected period.
+        short_period_note: Period too short to annualize reliably (needs %{min_days}+ days); showing interest only.
+        account: Account
+        interest: Interest
+        avg_balance: Avg balance
+        arr: ARR

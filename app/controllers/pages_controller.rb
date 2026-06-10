@@ -11,6 +11,7 @@ class PagesController < ApplicationController
 
     @balance_sheet = Current.family.balance_sheet
     @investment_statement = Current.family.investment_statement
+    @investments_pro = InvestmentProStatement.new(Current.family, user: Current.user).interest_arr(period: @period)
     @accounts = Current.user.accessible_accounts.visible.with_attached_logo
 
     family_currency = Current.family.currency
@@ -107,6 +108,14 @@ class PagesController < ApplicationController
           partial: "pages/dashboard/investment_summary",
           locals: { investment_statement: @investment_statement, period: @period },
           visible: @accounts.any? && @investment_statement.investment_accounts.any?,
+          collapsible: true
+        },
+        {
+          key: "investments_pro",
+          title: "pages.dashboard.investments_pro.title",
+          partial: "pages/dashboard/investments_pro",
+          locals: { result: @investments_pro, period: @period },
+          visible: @accounts.any? && @investments_pro.accounts.any?,
           collapsible: true
         },
         {

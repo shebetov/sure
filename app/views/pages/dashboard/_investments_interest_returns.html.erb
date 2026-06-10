@@ -1,7 +1,7 @@
 <%# locals: (result:, period:, **args) %>
 
 <% if result.accounts.any? %>
-  <div id="investments-pro" class="space-y-4">
+  <div id="investments-interest-returns" class="space-y-4">
     <div class="flex justify-between gap-4 px-4">
       <div class="space-y-2">
         <div class="flex items-center gap-2">
@@ -22,7 +22,7 @@
         </div>
 
         <p class="text-xs text-secondary">
-          <%= result.annualized ? t(".annualized_note") : t(".short_period_note", min_days: InvestmentProStatement::MIN_ANNUALIZE_DAYS) %>
+          <%= result.annualized ? t(".annualized_note") : t(".short_period_note", min_days: InvestmentInterestReturnsStatement::MIN_ANNUALIZE_DAYS) %>
         </p>
       </div>
     </div>

@@ -1,4 +1,4 @@
-class InvestmentProStatement
+class InvestmentInterestReturnsStatement
   MIN_ANNUALIZE_DAYS = 30
 
   AccountArr = Data.define(:account, :interest, :avg_balance, :arr)

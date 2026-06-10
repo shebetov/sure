@@ -1,8 +1,8 @@
 en:
   pages:
     dashboard:
-      investments_pro:
-        title: Investments (Pro)
+      investments_interest_returns:
+        title: Investments Interest Returns
         interest_earned: Interest earned
         not_available: "n/a"
         annualized_note: Annualized interest yield (ARR) over the selected period.

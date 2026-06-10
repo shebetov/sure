@@ -53,7 +53,7 @@ class CurrencyBreakdownStatement
 
     def accounts
       @accounts ||= begin
-        scope = family.accounts.visible
+        scope = family.accounts.visible.where.not(accountable_type: "Vehicle")
         scope = scope.included_in_finances_for(user) if user
         scope.to_a
       end

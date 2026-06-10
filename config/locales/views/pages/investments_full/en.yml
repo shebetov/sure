@@ -1,8 +1,8 @@
 en:
   pages:
     dashboard:
-      crypto_pnl:
-        title: Crypto P&L
+      investments_full:
+        title: Investments Full
         note: Unrealized gains/losses based on average cost basis vs current market value.
         partial_cost_basis_note: Some assets have unknown cost basis; P&L shown where available.
         asset: Asset

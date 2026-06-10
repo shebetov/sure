@@ -1,4 +1,4 @@
-class CryptoPnlStatement
+class InvestmentsFullStatement
   HoldingRow = Data.define(:name, :ticker, :qty, :current_value, :cost_basis_value, :unrealized_pnl, :pnl_percent)
   Result = Data.define(:holdings, :total_value, :total_cost_basis, :total_unrealized_pnl, :family_currency, :has_partial_cost_basis)
 

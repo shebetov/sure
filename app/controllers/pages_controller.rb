@@ -13,7 +13,7 @@ class PagesController < ApplicationController
     @investment_statement = Current.family.investment_statement
     @investments_interest_returns = InvestmentInterestReturnsStatement.new(Current.family, user: Current.user).interest_arr(period: @period)
     @currency_breakdown = CurrencyBreakdownStatement.new(Current.family, user: Current.user).breakdown
-    @crypto_pnl = CryptoPnlStatement.new(Current.family, user: Current.user).breakdown
+    @investments_full = InvestmentsFullStatement.new(Current.family, user: Current.user).breakdown
     @accounts = Current.user.accessible_accounts.visible.with_attached_logo
 
     family_currency = Current.family.currency
@@ -121,11 +121,11 @@ class PagesController < ApplicationController
           collapsible: true
         },
         {
-          key: "crypto_pnl",
-          title: "pages.dashboard.crypto_pnl.title",
-          partial: "pages/dashboard/crypto_pnl",
-          locals: { result: @crypto_pnl },
-          visible: @accounts.any? && @crypto_pnl.holdings.any?,
+          key: "investments_full",
+          title: "pages.dashboard.investments_full.title",
+          partial: "pages/dashboard/investments_full",
+          locals: { result: @investments_full },
+          visible: @accounts.any? && @investments_full.holdings.any?,
           collapsible: true
         },
         {

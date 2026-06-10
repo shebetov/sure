@@ -91,7 +91,7 @@ class CryptoPnlStatement
 
     def crypto_accounts
       @crypto_accounts ||= begin
-        scope = family.accounts.visible.where(accountable_type: "Crypto")
+        scope = family.accounts.visible.where(accountable_type: %w[Investment Crypto])
         scope = scope.included_in_finances_for(user) if user
         scope.to_a
       end

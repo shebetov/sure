@@ -1,0 +1,11 @@
+en:
+  pages:
+    dashboard:
+      currency_breakdown:
+        title: Currency breakdown
+        note: Net worth by account currency, converted to your base currency at today's rates.
+        currency: Currency
+        accounts: Accounts
+        native_total: Native total
+        converted_total: Converted total
+        share: Share

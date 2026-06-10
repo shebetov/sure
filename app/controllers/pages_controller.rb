@@ -12,6 +12,7 @@ class PagesController < ApplicationController
     @balance_sheet = Current.family.balance_sheet
     @investment_statement = Current.family.investment_statement
     @investments_pro = InvestmentProStatement.new(Current.family, user: Current.user).interest_arr(period: @period)
+    @currency_breakdown = CurrencyBreakdownStatement.new(Current.family, user: Current.user).breakdown
     @accounts = Current.user.accessible_accounts.visible.with_attached_logo
 
     family_currency = Current.family.currency
@@ -116,6 +117,14 @@ class PagesController < ApplicationController
           partial: "pages/dashboard/investments_pro",
           locals: { result: @investments_pro, period: @period },
           visible: @accounts.any? && @investments_pro.accounts.any?,
+          collapsible: true
+        },
+        {
+          key: "currency_breakdown",
+          title: "pages.dashboard.currency_breakdown.title",
+          partial: "pages/dashboard/currency_breakdown",
+          locals: { result: @currency_breakdown },
+          visible: @accounts.any? && @currency_breakdown.currencies.size > 1,
           collapsible: true
         },
         {

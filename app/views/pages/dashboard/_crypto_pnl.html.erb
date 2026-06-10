@@ -1,0 +1,82 @@
+<%# locals: (result:, **args) %>
+
+<% if result.holdings.any? %>
+  <div id="crypto-pnl" class="space-y-4">
+    <div class="flex justify-between gap-4 px-4">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2">
+          <h2 class="text-lg font-medium"><%= t(".title") %></h2>
+        </div>
+        <p class="text-primary text-3xl font-medium privacy-sensitive">
+          <%= format_money(result.total_value) %>
+        </p>
+        <% if result.total_unrealized_pnl %>
+          <div class="flex items-center gap-2 text-sm">
+            <span class="text-secondary"><%= t(".unrealized_pnl") %>:</span>
+            <span class="font-medium privacy-sensitive <%= result.total_unrealized_pnl.amount >= 0 ? "text-green-600" : "text-red-500" %>">
+              <%= format_money(result.total_unrealized_pnl) %>
+              <% if result.total_cost_basis&.amount&.positive? %>
+                (<%= number_to_percentage((result.total_unrealized_pnl.amount / result.total_cost_basis.amount) * 100, precision: 1) %>)
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+        <p class="text-xs text-secondary">
+          <%= result.has_partial_cost_basis ? t(".partial_cost_basis_note") : t(".note") %>
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-container-inset rounded-xl p-1 mx-4 overflow-x-auto">
+      <div class="rounded-lg shadow-border-xs bg-container overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-container-inset">
+            <tr class="uppercase text-xs font-medium text-secondary">
+              <th class="px-4 py-2 text-left font-medium"><%= t(".asset") %></th>
+              <th class="px-4 py-2 text-right font-medium"><%= t(".cost_basis") %></th>
+              <th class="px-4 py-2 text-right font-medium"><%= t(".current_value") %></th>
+              <th class="px-4 py-2 text-right font-medium"><%= t(".unrealized_pnl") %></th>
+              <th class="px-4 py-2 text-right font-medium"><%= t(".pnl_pct") %></th>
+            </tr>
+          </thead>
+          <tbody class="font-medium text-sm">
+            <% result.holdings.each_with_index do |row, idx| %>
+              <tr class="<%= idx < result.holdings.size - 1 ? "table-divider" : "" %>">
+                <td class="p-4">
+                  <p class="font-medium"><%= row.name %></p>
+                  <p class="text-xs text-secondary"><%= row.ticker %></p>
+                </td>
+                <td class="p-4 text-right privacy-sensitive">
+                  <% if row.cost_basis_value %>
+                    <%= format_money(row.cost_basis_value) %>
+                  <% else %>
+                    <span class="text-secondary">-</span>
+                  <% end %>
+                </td>
+                <td class="p-4 text-right privacy-sensitive"><%= format_money(row.current_value) %></td>
+                <td class="p-4 text-right privacy-sensitive">
+                  <% if row.unrealized_pnl %>
+                    <span class="<%= row.unrealized_pnl.amount >= 0 ? "text-green-600" : "text-red-500" %>">
+                      <%= format_money(row.unrealized_pnl) %>
+                    </span>
+                  <% else %>
+                    <span class="text-secondary">-</span>
+                  <% end %>
+                </td>
+                <td class="p-4 text-right">
+                  <% if row.pnl_percent %>
+                    <span class="privacy-sensitive <%= row.pnl_percent >= 0 ? "text-green-600" : "text-red-500" %>">
+                      <%= number_to_percentage(row.pnl_percent, precision: 1) %>
+                    </span>
+                  <% else %>
+                    <span class="text-secondary">-</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,46 @@
+<%# locals: (result:, **args) %>
+
+<% if result.currencies.any? %>
+  <div id="currency-breakdown" class="space-y-4">
+    <div class="flex justify-between gap-4 px-4">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2">
+          <h2 class="text-lg font-medium"><%= t(".title") %></h2>
+        </div>
+
+        <p class="text-primary text-3xl font-medium privacy-sensitive">
+          <%= format_money(result.total) %>
+        </p>
+
+        <p class="text-xs text-secondary"><%= t(".note") %></p>
+      </div>
+    </div>
+
+    <div class="bg-container-inset rounded-xl p-1 mx-4 overflow-x-auto">
+      <div class="rounded-lg shadow-border-xs bg-container overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-container-inset">
+            <tr class="uppercase text-xs font-medium text-secondary">
+              <th class="px-4 py-2 text-left font-medium"><%= t(".currency") %></th>
+              <th class="px-4 py-2 text-right font-medium"><%= t(".accounts") %></th>
+              <th class="px-4 py-2 text-right font-medium"><%= t(".native_total") %></th>
+              <th class="px-4 py-2 text-right font-medium"><%= t(".converted_total") %></th>
+              <th class="px-4 py-2 text-right font-medium"><%= t(".share") %></th>
+            </tr>
+          </thead>
+          <tbody class="font-medium text-sm">
+            <% result.currencies.each_with_index do |row, idx| %>
+              <tr class="<%= idx < result.currencies.size - 1 ? "table-divider" : "" %>">
+                <td class="p-4 font-medium"><%= row.currency %></td>
+                <td class="p-4 text-right text-secondary"><%= row.account_count %></td>
+                <td class="p-4 text-right privacy-sensitive"><%= format_money(row.native_total) %></td>
+                <td class="p-4 text-right privacy-sensitive"><%= format_money(row.converted_total) %></td>
+                <td class="p-4 text-right"><%= number_to_percentage(row.percentage, precision: 1) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,8 +1,8 @@
 import_market_data:
-  cron: "0 22 * * 1-5" # 5:00 PM EST / 6:00 PM EDT (NY time) Monday through Friday
+  cron: "*/15 * * * 1-5" # Every 15 minutes, Monday through Friday
   class: "ImportMarketDataJob"
   queue: "scheduled"
-  description: "Imports market data daily at 5:00 PM EST (1 hour after market close)"
+  description: "Imports market data every 15 minutes on weekdays"
   args:
     mode: "full"
     clear_cache: false

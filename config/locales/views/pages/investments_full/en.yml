@@ -1,0 +1,12 @@
+en:
+  pages:
+    dashboard:
+      investments_full:
+        title: Investments Full
+        note: Unrealized gains/losses based on average cost basis vs current market value.
+        partial_cost_basis_note: Some assets have unknown cost basis; P&L shown where available.
+        asset: Asset
+        cost_basis: Cost basis
+        current_value: Current value
+        unrealized_pnl: Unrealized P&L
+        pnl_pct: P&L %

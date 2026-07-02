@@ -30,6 +30,7 @@ class PagesController < ApplicationController
     @balance_sheet = Current.family.balance_sheet
     @investment_statement = Current.family.investment_statement
     @currency_breakdown = CurrencyBreakdownStatement.new(Current.family, user: Current.user).breakdown
+    @investments_full = InvestmentsFullStatement.new(Current.family, user: Current.user).breakdown
     @accounts = Current.user.accessible_accounts.visible.with_attached_logo
 
     family_currency = Current.family.currency
@@ -130,6 +131,14 @@ class PagesController < ApplicationController
           layout: section_layout("investment_summary"),
           locals: { investment_statement: @investment_statement, period: @period },
           visible: @accounts.any? && @investment_statement.investment_accounts.any?,
+          collapsible: true
+        },
+        {
+          key: "investments_full",
+          title: "pages.dashboard.investments_full.title",
+          partial: "pages/dashboard/investments_full",
+          locals: { result: @investments_full },
+          visible: @accounts.any? && @investments_full.holdings.any?,
           collapsible: true
         },
         {

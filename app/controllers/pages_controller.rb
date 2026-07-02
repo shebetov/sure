@@ -137,6 +137,7 @@ class PagesController < ApplicationController
           key: "investments_full",
           title: "pages.dashboard.investments_full.title",
           partial: "pages/dashboard/investments_full",
+          layout: section_layout("investments_full"),
           locals: { result: @investments_full },
           visible: @accounts.any? && @investments_full.holdings.any?,
           collapsible: true
@@ -145,6 +146,7 @@ class PagesController < ApplicationController
           key: "currency_breakdown",
           title: "pages.dashboard.currency_breakdown.title",
           partial: "pages/dashboard/currency_breakdown",
+          layout: section_layout("currency_breakdown"),
           locals: { result: @currency_breakdown },
           visible: @accounts.any? && @currency_breakdown.currencies.size > 1,
           collapsible: true

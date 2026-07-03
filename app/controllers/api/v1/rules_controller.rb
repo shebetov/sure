@@ -14,6 +14,11 @@ class Api::V1::RulesController < Api::V1::BaseController
   before_action :ensure_read_scope
   before_action :set_rule, only: :show
 
+  def apply_all
+    ApplyAllRulesJob.perform_later(current_resource_owner.family)
+    render json: { message: "Rules apply_all job queued" }
+  end
+
   def index
     return render_invalid_resource_type_filter if invalid_resource_type_filter?
 

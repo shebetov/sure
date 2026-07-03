@@ -1,5 +1,5 @@
 class InvestmentsFullStatement
-  HoldingRow = Data.define(:name, :ticker, :qty, :current_value, :cost_basis_value, :unrealized_pnl, :pnl_percent)
+  HoldingRow = Data.define(:name, :ticker, :qty, :open_price, :current_price, :current_value, :cost_basis_value, :unrealized_pnl, :pnl_percent)
   Result = Data.define(:holdings, :total_value, :total_cost_basis, :total_unrealized_pnl, :family_currency, :has_partial_cost_basis)
 
   attr_reader :family, :user
@@ -39,10 +39,15 @@ class InvestmentsFullStatement
         pnl_percent = cost_basis_total.positive? ? (unrealized_pnl / cost_basis_total) * 100 : nil
       end
 
+      avg_cost_money = holding_list.first.avg_cost
+      current_price_money = holding_list.first.price
+
       HoldingRow.new(
         name: security.name.presence || security.ticker,
         ticker: security.ticker,
         qty: qty,
+        open_price: avg_cost_money,
+        current_price: current_price_money ? Money.new(current_price_money, holding_list.first.currency) : nil,
         current_value: Money.new(current_val, family.currency),
         cost_basis_value: cost_basis_total ? Money.new(cost_basis_total, family.currency) : nil,
         unrealized_pnl: unrealized_pnl ? Money.new(unrealized_pnl, family.currency) : nil,
@@ -61,6 +66,8 @@ class InvestmentsFullStatement
         name: "Cash",
         ticker: family.currency,
         qty: nil,
+        open_price: nil,
+        current_price: nil,
         current_value: Money.new(cash_value, family.currency),
         cost_basis_value: Money.new(cash_value, family.currency),
         unrealized_pnl: Money.new(0, family.currency),

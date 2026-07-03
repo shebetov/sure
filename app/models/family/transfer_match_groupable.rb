@@ -7,16 +7,20 @@ module Family::TransferMatchGroupable
 
     transaction_ids = candidates.flat_map { |c| [c.inflow_transaction_id, c.outflow_transaction_id] }.uniq
     transactions_by_id = Transaction.includes(entry: :account).where(id: transaction_ids).index_by(&:id)
-    group_memberships = transfer_match_group_memberships.index_by(&:account_id)
+
+    account_to_groups = TransferMatchGroupMembership
+      .where(transfer_match_group: transfer_match_groups)
+      .group_by(&:account_id)
+      .transform_values { |memberships| memberships.map(&:transfer_match_group_id).uniq }
 
     candidates.select do |candidate|
       inflow_txn = transactions_by_id[candidate.inflow_transaction_id]
       outflow_txn = transactions_by_id[candidate.outflow_transaction_id]
       next false unless inflow_txn && outflow_txn
 
-      inflow_group = group_memberships[inflow_txn.entry.account_id]&.transfer_match_group_id
-      outflow_group = group_memberships[outflow_txn.entry.account_id]&.transfer_match_group_id
-      inflow_group.present? && inflow_group == outflow_group
+      inflow_groups = account_to_groups[inflow_txn.entry.account_id] || []
+      outflow_groups = account_to_groups[outflow_txn.entry.account_id] || []
+      (inflow_groups & outflow_groups).any?
     end
   end
 end

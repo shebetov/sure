@@ -25,7 +25,7 @@ class MarketDataImporter
     # Import all securities that aren't marked as "offline" (i.e. they're available from the provider)
     Security.online.find_each do |security|
       security.import_provider_prices(
-        start_date: get_first_required_price_date(security),
+        start_date: today_only? ? end_date : get_first_required_price_date(security),
         end_date: end_date,
         clear_cache: clear_cache
       )
@@ -42,7 +42,13 @@ class MarketDataImporter
 
     required_exchange_rate_pairs.each do |pair|
       # pair is a Hash with keys :source, :target, and :start_date
-      start_date = snapshot? ? default_start_date : pair[:start_date]
+      if today_only?
+        start_date = end_date
+      elsif snapshot?
+        start_date = default_start_date
+      else
+        start_date = pair[:start_date]
+      end
 
       ExchangeRate.import_provider_rates(
         from: pair[:source],
@@ -121,11 +127,15 @@ class MarketDataImporter
       Date.current.in_time_zone("America/New_York").to_date
     end
 
+    def today_only?
+      mode.to_sym == :today_only
+    end
+
     def set_mode!(mode)
-      valid_modes = [ :full, :snapshot ]
+      valid_modes = [ :full, :snapshot, :today_only ]
 
       unless valid_modes.include?(mode.to_sym)
-        raise InvalidModeError, "Invalid mode for MarketDataImporter, can only be :full or :snapshot, but was #{mode}"
+        raise InvalidModeError, "Invalid mode for MarketDataImporter, can only be :full, :snapshot, or :today_only, but was #{mode}"
       end
 
       mode.to_sym

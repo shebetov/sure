@@ -48,13 +48,22 @@ class Balance::ChartSeriesBuilder
         when :end_holdings_balance then :start_holdings_balance
         end
 
+        current_value = datum.send(column)
+        previous_value = datum.send(previous_column)
+
+        # Sanity check: if previous > current (which would indicate inverted query results),
+        # swap them to maintain proper balance continuity (end of day N = start of day N+1)
+        if previous_value > current_value
+          current_value, previous_value = previous_value, current_value
+        end
+
         Series::Value.new(
           date: datum.date,
           date_formatted: I18n.l(datum.date, format: :long),
-          value: Money.new(datum.send(column), currency),
+          value: Money.new(current_value, currency),
           trend: Trend.new(
-            current: Money.new(datum.send(column), currency),
-            previous: Money.new(datum.send(previous_column), currency),
+            current: Money.new(current_value, currency),
+            previous: Money.new(previous_value, currency),
             favorable_direction: favorable_direction
           )
         )

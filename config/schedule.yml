@@ -1,8 +1,17 @@
-import_market_data:
+import_market_data_today:
   cron: "*/15 * * * 1-5" # Every 15 minutes, Monday through Friday
   class: "ImportMarketDataJob"
   queue: "scheduled"
-  description: "Imports market data every 15 minutes on weekdays"
+  description: "Refreshes today's market data every 15 minutes on weekdays"
+  args:
+    mode: "today_only"
+    clear_cache: false
+
+import_market_data_full:
+  cron: "0 21 * * 1-5" # 9 PM UTC = 5 PM EST (market close), Monday through Friday
+  class: "ImportMarketDataJob"
+  queue: "scheduled"
+  description: "Full historical market data sync once daily at market close"
   args:
     mode: "full"
     clear_cache: false

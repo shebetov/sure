@@ -7,6 +7,11 @@ class Api::V1::TransfersController < Api::V1::BaseController
   before_action :ensure_read_scope
   before_action :set_transfer, only: :show
 
+  def auto_match
+    current_resource_owner.family.auto_match_transfers!
+    render json: { message: "Auto transfer matching completed" }
+  end
+
   def index
     transfers_query = apply_transfer_decision_filters(transfers_scope, status_model: Transfer).order(created_at: :desc)
     @per_page = safe_per_page_param

@@ -124,4 +124,16 @@ class TransferTest < ActiveSupport::TestCase
   test "kind_for_account returns funds_movement for depository accounts" do
     assert_equal "funds_movement", Transfer.kind_for_account(accounts(:depository))
   end
+
+  test "kind_for_account returns funds_movement for investment to investment" do
+    assert_equal "funds_movement", Transfer.kind_for_account(accounts(:investment), source_account: accounts(:investment))
+  end
+
+  test "kind_for_account returns funds_movement for crypto to investment" do
+    assert_equal "funds_movement", Transfer.kind_for_account(accounts(:investment), source_account: accounts(:crypto))
+  end
+
+  test "kind_for_account returns investment_contribution for depository to investment" do
+    assert_equal "investment_contribution", Transfer.kind_for_account(accounts(:investment), source_account: accounts(:depository))
+  end
 end

@@ -31,6 +31,7 @@
 - PRs: Clear description, linked issues, screenshots for UI changes, and migration notes if applicable. Ensure CI passes, tests added/updated, and `rubocop`/Biome are clean.
 
 ## Security & Configuration Tips
+- This repository is a **public fork** (origin: `shebetov/sure`). Never commit secrets, API keys, tokens, credentials, private keys, or any personal data (real names, emails, home paths, IPs, VM details). This applies to every branch, the working tree, and git history.
 - Never commit secrets. Start from `.env.local.example`; use `.env.local` for development only.
 - Run `bin/brakeman` before major PRs. Prefer environment variables over hard-coded values.
 

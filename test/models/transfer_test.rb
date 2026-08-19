@@ -165,5 +165,4 @@ class TransferTest < ActiveSupport::TestCase
   test "kind_for_account returns investment_contribution for depository to investment" do
     assert_equal "investment_contribution", Transfer.kind_for_account(accounts(:investment), source_account: accounts(:depository))
   end
-  end
 end

@@ -69,33 +69,23 @@ class Balance::ChartSeriesBuilder
     end
 
     def build_series_for(column)
+      previous_value = nil
       values = query_data.map do |datum|
-        # Map column names to their start equivalents
-        previous_column = case column
-        when :end_balance then :start_balance
-        when :end_cash_balance then :start_cash_balance
-        when :end_holdings_balance then :start_holdings_balance
-        end
+        value = Money.new(datum.send(column), currency)
 
-        current_value = datum.send(column)
-        previous_value = datum.send(previous_column)
-
-        # Sanity check: if previous > current (which would indicate inverted query results),
-        # swap them to maintain proper balance continuity (end of day N = start of day N+1)
-        if previous_value > current_value
-          current_value, previous_value = previous_value, current_value
-        end
-
-        Series::Value.new(
+        series_value = Series::Value.new(
           date: datum.date,
           date_formatted: I18n.l(datum.date, format: :long),
-          value: Money.new(current_value, currency),
+          value: value,
           trend: Trend.new(
-            current: Money.new(current_value, currency),
-            previous: Money.new(previous_value, currency),
+            current: value,
+            previous: previous_value || value,
             favorable_direction: favorable_direction
           )
         )
+
+        previous_value = value
+        series_value
       end
 
       Series.new(

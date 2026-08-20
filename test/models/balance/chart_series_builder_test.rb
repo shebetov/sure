@@ -481,6 +481,38 @@ class Balance::ChartSeriesBuilderTest < ActiveSupport::TestCase
     assert_equal 200, series.values.last.trend.current.amount
   end
 
+  test "balance series values carry trend vs previous point and ignore stale start balance" do
+    account = accounts(:depository)
+    account.balances.destroy_all
+
+    # First row has a stale start_balance (e.g. archived/zeroed account): start > end.
+    # The series value must be the true end balance, never the inflated start balance.
+    create_balance_with_flows(account: account, date: 2.days.ago.to_date, start_balance: 1000, end_balance: 500)
+    create_balance_with_flows(account: account, date: 1.day.ago.to_date, start_balance: 500, end_balance: 600)
+    create_balance(account: account, date: Date.current, balance: 700)
+
+    builder = Balance::ChartSeriesBuilder.new(
+      account_ids: [ account.id ],
+      currency: "USD",
+      period: Period.custom(start_date: 2.days.ago.to_date, end_date: Date.current),
+      interval: "1 day"
+    )
+
+    series = builder.balance_series
+
+    assert_equal [ 500, 600, 700 ], series.values.map { |v| v.value.amount }
+
+    # First point has no prior point, so trend is flat
+    assert_equal 500, series.values.first.trend.previous.amount
+    assert_equal 500, series.values.first.trend.current.amount
+
+    # Trend compares against the previous point's end value, not the stale start balance
+    assert_equal 500, series.values[1].trend.previous.amount
+    assert_equal 600, series.values[1].trend.current.amount
+    assert_equal 600, series.values.last.trend.previous.amount
+    assert_equal 700, series.values.last.trend.current.amount
+  end
+
   private
     def create_holding(account:, security:, date:, qty:, price:, cost_basis:)
       Holding.create!(

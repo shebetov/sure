@@ -15,7 +15,10 @@ class Family::AutoCategorizerTest < ActiveSupport::TestCase
     txn2 = create_transaction(account: @account, name: "Amazon purchase").transaction
     txn3 = create_transaction(account: @account, name: "Netflix subscription").transaction
 
-    test_category = @family.categories.create!(name: "Test category")
+    # Fork restricts AI auto-categorization to subcategories (FORK-CHANGELOG #10);
+    # the assigned category must be a subcategory, not a top-level category.
+    parent_category = @family.categories.create!(name: "Test parent category")
+    test_category = @family.categories.create!(name: "Test category", parent: parent_category)
 
     provider_response = provider_success_response([
       AutoCategorization.new(transaction_id: txn1.id, category_name: test_category.name),

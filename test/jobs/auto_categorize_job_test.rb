@@ -6,7 +6,10 @@ class AutoCategorizeJobTest < ActiveJob::TestCase
   setup do
     @family = families(:empty)
     @account = @family.accounts.create!(name: "Rule test", balance: 100, currency: "USD", accountable: Depository.new)
-    @family.categories.create!(name: "Food")
+    # Fork restricts AI auto-categorization to subcategories (FORK-CHANGELOG #10);
+    # the assigned category must be a subcategory, not a top-level category.
+    parent_category = @family.categories.create!(name: "Groceries")
+    @family.categories.create!(name: "Food", parent: parent_category)
     @rule = @family.rules.create!(
       name: "AI category rule",
       resource_type: "transaction",

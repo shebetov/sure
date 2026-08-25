@@ -35,6 +35,7 @@ class AccountsController < ApplicationController
     @kraken_items = visible_provider_items(family.kraken_items.ordered.with_attached_logo.includes(:kraken_accounts, :accounts))
     @questrade_items = visible_provider_items(family.questrade_items.ordered.with_attached_logo.includes(:accounts, questrade_accounts: :account_provider))
     @wise_items = visible_provider_items(family.wise_items.ordered.includes(:wise_accounts, :accounts))
+    @trading212_items = visible_provider_items(family.trading212_items.ordered)
 
     # An on-chain item is admitted as soon as ONE of its accounts is accessible,
     # so the card is told which of them this viewer may actually see. nil is the
@@ -339,6 +340,7 @@ class AccountsController < ApplicationController
         @brex_items,
         @coinbase_items,
         @snaptrade_items,
+        @trading212_items,
         @ibkr_items,
         @indexa_capital_items,
         @sophtron_items,

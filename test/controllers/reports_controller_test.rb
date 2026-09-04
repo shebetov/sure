@@ -442,8 +442,8 @@ class ReportsControllerTest < ActionDispatch::IntegrationTest
     assert_select "tr[data-category='category-#{income_category.id}'] a[href=?]", income_href, text: income_category.name
     assert_select "tr[data-category='category-uncategorized'] a[href=?]", uncategorized_href, text: Category.uncategorized.name
 
-    # Full-row hit target via stretched ::before (mirrors dashboard outflows)
-    assert_select "tr.relative.group\\/category-row[data-category='category-#{expense_category.id}'] a[class*='before:absolute'][class*='before:inset-0']"
+    # Category-cell hit target via stretched ::before (amount/% columns stay click-free)
+    assert_select "tr.group\\/category-row[data-category='category-#{expense_category.id}'] td.relative a[class*='before:absolute'][class*='before:inset-0']"
   end
 
   test "index uncategorized category link uses localized name that Search accepts" do

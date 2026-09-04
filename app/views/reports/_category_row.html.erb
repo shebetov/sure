@@ -11,8 +11,8 @@
 %>
 
 <tr data-category="category-<%= item[:category_id] %>"
-    class="text-secondary text-sm <%= show_border ? "table-divider" : "" %> <%= clickable ? "relative group/category-row" : "" %>">
-  <td colspan="2" class="py-3 px-4 lg:px-6 <%= is_sub ? "pl-7 lg:pl-9" : "" %>">
+    class="text-secondary text-sm <%= show_border ? "table-divider" : "" %> <%= clickable ? "group/category-row" : "" %>">
+  <td colspan="2" class="py-3 px-4 lg:px-6 <%= clickable ? "relative" : "" %> <%= is_sub ? "pl-7 lg:pl-9" : "" %>">
     <div class="flex items-center gap-2">
       <% if is_sub %>
         <div class="text-subdued">
@@ -38,8 +38,9 @@
         ) %>
       <% end %>
       <% if clickable %>
-        <%# Stretched link covers the full row (mirrors dashboard outflows).
-            `before:absolute before:inset-0` is positioned against the relative <tr>. %>
+        <%# Stretched link covers the category cell only (amount/% columns
+            stay clickable-free). `before:absolute before:inset-0` is
+            positioned against the relative <td>. %>
         <%= link_to item[:category_name],
               transactions_href,
               class: "font-medium text-primary hover:underline before:absolute before:inset-0 before:content-['']",

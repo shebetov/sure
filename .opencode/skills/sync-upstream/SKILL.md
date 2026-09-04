@@ -37,7 +37,15 @@ Args: optional target tag/ref (e.g. `v0.7.3` or `upstream/main`). Default: lates
      fork's lock-bypass commits net to zero (added, then reverted); resolve
      to upstream's content both times.
    - Deleted GH workflow files (mobile/chart/preview/publish CI) — keep them
-     deleted; fork only uses `.github/workflows/build.yml`.
+     deleted; fork only uses `.github/workflows/build.yml`. Also delete
+     `sync-maybe-sure.yml` if upstream reintroduces it: it only force-syncs
+     upstream's own `we-promise/maybe-sure` mirror repo (`if: github.repository`
+     gate) and is dead weight in the fork.
+   - **Fork-local patches to drop once upstream ships a fix** — marked
+     `~~Fork-local patch — remove on next sync…~~` in `FORK-CHANGELOG.md`
+     (currently: reports category-cell link scoping, sortable touch-handler
+     binding). When syncing, check the changelog markers and revert these
+     patches if upstream no longer needs them.
 5. Re-diff `sure-deploy/config/api_overrides.rb` against the upstream methods
    it copies (`Api::V1::TradesController#trade_params`, security-prices and
    exchange-rates controllers). It redefines whole methods via `class_eval`,

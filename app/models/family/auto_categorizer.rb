@@ -244,7 +244,7 @@ class Family::AutoCategorizer
     end
 
     def user_categories_input
-      family.categories.select(&:subcategory?).map do |category|
+      family.categories.reject { |category| category.subcategories.any? }.map do |category|
         {
           id: category.id,
           name: category.name,

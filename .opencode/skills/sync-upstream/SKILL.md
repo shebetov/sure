@@ -69,7 +69,6 @@ Args: optional target tag/ref (e.g. `v0.7.3` or `upstream/main`). Default: lates
      sure_bundle_cache:/bundle` + disposable postgres:16/redis containers on a
      shared docker network (`DB_HOST=<pg-container>`). Full suite ≈ 90s.
 7. `git push -u origin upstream-sync/<target>` (plain branch, doesn't
-7. `git push -u origin upstream-sync/<target>` (plain branch, doesn't
    trigger the build). Let the user review/test before going further.
 8. Once approved: `git checkout main && git reset --hard
    upstream-sync/<target> && git push --force-with-lease origin main` —

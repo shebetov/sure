@@ -81,9 +81,13 @@
 
     <% unless trading212_item.scheduled_for_deletion? %>
       <div class="space-y-4 mt-4">
-        <% visible_accounts = trading212_item.accounts & Current.user.accessible_accounts.to_a %>
-        <% if visible_accounts.any? %>
-          <%= render "accounts/index/account_groups", accounts: visible_accounts %>
+        <%# NOTE: no per-viewer filtering here. Trading212Item::SyncCompleteEvent
+            re-renders this partial from the sync job, where Current.user is nil
+            (same gotcha as plaid_items/_plaid_item), so a viewer-dependent filter
+            would empty the list for everyone on every broadcast. Visibility is
+            decided in AccountsController#visible_provider_items. %>
+        <% if trading212_item.accounts.any? %>
+          <%= render "accounts/index/account_groups", accounts: trading212_item.accounts %>
         <% end %>
 
         <% stats = trading212_item.syncs.ordered.first&.sync_stats || {} %>

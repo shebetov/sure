@@ -145,7 +145,7 @@ class PagesController < ApplicationController
         partial: "pages/dashboard/insights_feed",
         layout: section_layout("insights_feed"),
         locals: { insights: @feed_insights },
-        visible: @feed_insights.any?,
+        visible: false, # hidden by choice
         collapsible: true
       }
     end

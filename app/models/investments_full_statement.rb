@@ -39,15 +39,15 @@ class InvestmentsFullStatement
         pnl_percent = cost_basis_total.positive? ? (unrealized_pnl / cost_basis_total) * 100 : nil
       end
 
-      avg_cost_money = holding_list.first.avg_cost
-      current_price_money = holding_list.first.price
-
+      # Per-unit prices are derived from the summed values, so a security held in
+      # several accounts shows its qty-weighted average, in the family currency
+      # like the value columns.
       HoldingRow.new(
         name: security.name.presence || security.ticker,
         ticker: security.ticker,
         qty: qty,
-        open_price: avg_cost_money,
-        current_price: current_price_money ? Money.new(current_price_money, holding_list.first.currency) : nil,
+        open_price: cost_basis_total && qty.nonzero? ? Money.new(cost_basis_total / qty, family.currency) : nil,
+        current_price: qty.nonzero? ? Money.new(current_val / qty, family.currency) : nil,
         current_value: Money.new(current_val, family.currency),
         cost_basis_value: cost_basis_total ? Money.new(cost_basis_total, family.currency) : nil,
         unrealized_pnl: unrealized_pnl ? Money.new(unrealized_pnl, family.currency) : nil,

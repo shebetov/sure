@@ -195,7 +195,7 @@ class PagesController < ApplicationController
           partial: "pages/dashboard/investment_summary",
           layout: section_layout("investment_summary"),
           locals: { investment_statement: @investment_statement, period: @period },
-          visible: @accounts.any? && @investment_statement.investment_accounts.any?,
+          visible: false, # superseded by the investments_full section
           collapsible: true
         },
         {
